@@ -34,6 +34,10 @@
     .brand-description{display:flex;flex-direction:column;gap:4px;padding-left:18px;border-left:1px solid #daddd6}
     .brand-description strong{font-size:13px;letter-spacing:.13em;text-transform:uppercase;font-weight:850}
     .brand-description span{font-size:13px;color:var(--muted)}
+    .header-tools{display:flex;align-items:center;justify-content:flex-end;gap:11px;flex-shrink:0}
+    .lang-switch{display:flex;align-items:center;gap:3px;padding:4px;background:#f0f3f1;border:1px solid #e1e7e4;border-radius:13px}
+    .lang-switch button{padding:9px 13px;min-width:45px;border:0;border-radius:9px;background:transparent;color:#607372;font-weight:850;font-size:12px;letter-spacing:.035em}
+    .lang-switch button[aria-pressed="true"]{background:white;color:var(--teal-dark);box-shadow:0 1px 6px rgba(25,56,56,.12)}
     .offline{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:700;letter-spacing:.015em;color:#4e7476;background:#eef7f4;border:1px solid #d7e9e5;padding:10px 15px;border-radius:999px;white-space:nowrap}
     .offline::before{content:"";height:8px;width:8px;background:#58a16e;border-radius:50%}
     .intro{margin-bottom:30px;display:flex;justify-content:space-between;align-items:flex-end;gap:30px}
@@ -123,16 +127,17 @@
     .foot a{color:var(--teal-dark);text-decoration:none}
     .foot a:hover{text-decoration:underline}
     @media(max-width:870px){.wrap{padding:30px 20px 45px}.topbar{margin-bottom:42px}.workspace{grid-template-columns:minmax(0,1fr);gap:17px}.setup,.outcome{padding:28px}.intro-decor{display:none}.grade-large{font-size:78px}.foot{flex-direction:column;gap:6px}}
+    @media(max-width:650px){.topbar{flex-wrap:wrap}.header-tools{width:100%;justify-content:flex-end}.offline{font-size:11px}}
     @media(max-width:530px){.wrap{padding:24px 14px 30px}.topbar{margin-bottom:34px}.brand{gap:11px}.wordmark{width:118px}.brand-description{padding-left:11px}.brand-description strong{font-size:11px}.brand-description span{font-size:11px}.offline{font-size:0;padding:9px 10px;gap:0}.offline::before{height:9px;width:9px}.intro{margin-bottom:22px}.intro p:last-child{font-size:13px}.setup,.outcome{padding:20px;border-radius:20px}.panel-heading{margin-bottom:19px}.grade-grid{gap:9px}.grade-card{min-height:166px;padding:15px}.grade-large{font-size:62px}.grade-label{font-size:11px}.grade-sub{font-size:10px}.metrics{gap:7px}.metric{padding:11px 9px}.metric-label{font-size:10px}.metric-value{font-size:20px}.guide summary{padding:17px 18px}.guide-body{padding:0 13px 18px}th,td{padding:10px 10px}}
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
-    @media print{body{background:#fff}body::before{display:none}.wrap{max-width:100%;padding:0}.topbar{margin:0 0 16px}.intro{margin:0 0 15px}.intro-decor,.offline,.actions,.guide,.foot{display:none!important}.workspace{grid-template-columns:1fr 1fr;gap:15px}.panel{box-shadow:none;border-radius:12px}.setup,.outcome{padding:17px}.grade-large{font-size:63px}.grade-card{min-height:160px}.input-group{margin-bottom:10px}}
+    @media print{body{background:#fff}body::before{display:none}.wrap{max-width:100%;padding:0}.topbar{margin:0 0 16px}.intro{margin:0 0 15px}.intro-decor,.offline,.lang-switch,.actions,.guide,.foot{display:none!important}.workspace{grid-template-columns:1fr 1fr;gap:15px}.panel{box-shadow:none;border-radius:12px}.setup,.outcome{padding:17px}.grade-large{font-size:63px}.grade-card{min-height:160px}.input-group{margin-bottom:10px}}
   </style>
 </head>
 <body>
 <main class="wrap">
   <header class="topbar">
     <div class="brand">
-      <svg class="wordmark" role="img" aria-label="Klax logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 408 143">
+      <svg class="wordmark" role="img" aria-label="Klax logo" data-i18n-aria="logoAria" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 408 143">
         <title>KLAX</title>
         <g fill="none" stroke-linecap="round" stroke-linejoin="round">
           <path stroke="#f05008" stroke-width="24" d="M54 29 L54 125 M56 82 L110 32 M57 83 L112 122"/>
@@ -141,113 +146,234 @@
           <path stroke="#028bb1" stroke-width="26" d="M327 38 L380 122 M380 30 L331 121"/>
         </g>
       </svg>
-      <div class="brand-description"><strong>Klax · Learning tools</strong><span>Assessment made simple</span></div>
+      <div class="brand-description"><strong data-i18n="brandTitle">Klax · Learning tools</strong><span data-i18n="brandSubtitle">Assessment made simple</span></div>
     </div>
-    <div class="offline" title="Student scores are not sent to any server">Calculations stay in your browser</div>
+    <div class="header-tools">
+      <div class="lang-switch" role="group" aria-label="Display language" data-i18n-aria="languageLabel">
+        <button id="langEn" type="button" lang="en" aria-pressed="true" aria-label="Switch to English" title="English">EN</button>
+        <button id="langDe" type="button" lang="de" aria-pressed="false" aria-label="Auf Deutsch umschalten" title="Deutsch">DE</button>
+      </div>
+      <div class="offline" title="Student scores are not sent to any server" data-i18n-title="offlineTitle" data-i18n="offline">Calculations stay in your browser</div>
+    </div>
   </header>
   <section class="intro" aria-labelledby="mainTitle">
-    <div><p class="eyebrow">Tools for teachers</p><h1 id="mainTitle">Grade Calculator<span style="color:var(--orange)">.</span></h1><p>A clear, easy way to turn assessment points into grades — with separate E-Kurs and G-Kurs scales and the Klax grade limit.</p></div>
+    <div><p class="eyebrow" data-i18n="eyebrow">Tools for teachers</p><h1 id="mainTitle"><span data-i18n="heading">Grade Calculator</span><span style="color:var(--orange)">.</span></h1><p data-i18n="intro">A clear, easy way to turn assessment points into grades — with separate E-Kurs and G-Kurs scales and the Klax grade limit.</p></div>
     <div class="intro-decor" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
   </section>
   <div class="workspace">
     <section class="panel setup" aria-labelledby="setupTitle">
-      <div class="panel-heading"><span class="num">01</span><h2 id="setupTitle">Enter assessment points</h2></div>
-      <label class="group-label" id="courseLabel">Select grading scale</label>
+      <div class="panel-heading"><span class="num">01</span><h2 id="setupTitle" data-i18n="setupTitle">Enter assessment points</h2></div>
+      <label class="group-label" id="courseLabel" data-i18n="courseLabel">Select grading scale</label>
       <div class="segmented" role="group" aria-labelledby="courseLabel"><button id="eCourse" type="button" aria-pressed="true">E-Kurs</button><button id="gCourse" type="button" aria-pressed="false">G-Kurs</button></div>
       <p class="scale-explainer" id="courseInfo">Differentiated grades including + and −; grade 1 starts at 92%.</p>
       <div class="input-group">
-        <div class="input-title"><label for="total">Total possible points</label><span class="unit">Maximum</span></div>
-        <div class="field-wrap"><input id="total" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" value="40" aria-describedby="totalHelp"><span class="suffix">pts</span></div>
-        <p class="helper" id="totalHelp">The highest possible score for this task.</p>
+        <div class="input-title"><label for="total" data-i18n="totalLabel">Total possible points</label><span class="unit" data-i18n="maximum">Maximum</span></div>
+        <div class="field-wrap"><input id="total" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" value="40" aria-describedby="totalHelp"><span class="suffix" data-i18n="pointsShort">pts</span></div>
+        <p class="helper" id="totalHelp" data-i18n="totalHelp">The highest possible score for this task.</p>
       </div>
       <div class="input-group">
-        <div class="input-title"><label for="scored">Student's points</label><span class="unit">Achieved</span></div>
-        <div class="field-wrap"><input id="scored" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" value="32" aria-describedby="scoredHelp"><span class="suffix">pts</span></div>
-        <p class="helper" id="scoredHelp">Whole or decimal points, e.g. 32 or 32,5.</p>
+        <div class="input-title"><label for="scored" data-i18n="scoredLabel">Student's points</label><span class="unit" data-i18n="achieved">Achieved</span></div>
+        <div class="field-wrap"><input id="scored" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" value="32" aria-describedby="scoredHelp"><span class="suffix" data-i18n="pointsShort">pts</span></div>
+        <p class="helper" id="scoredHelp" data-i18n="scoredHelp">Whole or decimal points, e.g. 32 or 32,5.</p>
       </div>
       <div id="error" class="error" role="status" aria-live="polite"></div>
-      <div class="actions"><button class="primary" id="next" type="button">Next student <span aria-hidden="true">→</span></button><button class="secondary" id="reset" type="button">Reset</button></div>
+      <div class="actions"><button class="primary" id="next" type="button"><span data-i18n="nextStudent">Next student</span> <span aria-hidden="true">→</span></button><button class="secondary" id="reset" type="button" data-i18n="reset">Reset</button></div>
     </section>
     <section class="panel outcome" aria-labelledby="resultsTitle" aria-live="polite" aria-atomic="false">
-      <div class="result-head"><div class="panel-heading" style="margin:0"><span class="num">02</span><h2 id="resultsTitle">Your grade results</h2></div><span class="tiny">Calculated instantly</span></div>
+      <div class="result-head"><div class="panel-heading" style="margin:0"><span class="num">02</span><h2 id="resultsTitle" data-i18n="resultsTitle">Your grade results</h2></div><span class="tiny" data-i18n="instant">Calculated instantly</span></div>
       <div class="grade-grid">
-        <div class="grade-card"><div class="grade-label">Actual grade</div><div class="grade-large" id="actualGrade">2−</div><div class="grade-sub" id="actualText">E-Kurs assessment grade</div></div>
-        <div class="grade-card limit" id="limitCard"><div class="grade-label">Klax Limit Grade</div><div class="grade-large" id="limitGrade">2−</div><div class="grade-sub" id="limitText">Minimum permitted: 4−</div></div>
+        <div class="grade-card"><div class="grade-label" data-i18n="actualGrade">Actual grade</div><div class="grade-large" id="actualGrade">2−</div><div class="grade-sub" id="actualText">E-Kurs assessment grade</div></div>
+        <div class="grade-card limit" id="limitCard"><div class="grade-label" data-i18n="limitGrade">Klax Limit Grade</div><div class="grade-large" id="limitGrade">2−</div><div class="grade-sub" id="limitText">Minimum permitted: 4−</div></div>
       </div>
       <div class="metrics">
-        <div class="metric"><div class="metric-label">Percentage</div><div class="metric-value" id="percent">80%</div></div>
-        <div class="metric"><div class="metric-label">Notenpunkte*</div><div class="metric-value" id="notenpunkte">10 / 15</div></div>
-        <div class="metric"><div class="metric-label">Whole grade</div><div class="metric-value" id="wholeGrade">2</div></div>
+        <div class="metric"><div class="metric-label" data-i18n="percentage">Percentage</div><div class="metric-value" id="percent">80%</div></div>
+        <div class="metric"><div class="metric-label" data-i18n="notepoints">Notenpunkte*</div><div class="metric-value" id="notenpunkte">10 / 15</div></div>
+        <div class="metric"><div class="metric-label" data-i18n="wholeGrade">Whole grade</div><div class="metric-value" id="wholeGrade">2</div></div>
       </div>
-      <div class="meter-head"><span>Score achieved</span><span id="meterLabel">32 of 40 points</span></div>
-      <div class="meter" role="progressbar" aria-label="Percentage of available points earned" aria-valuemin="0" aria-valuemax="100" aria-valuenow="80" id="meter"><div class="meter-fill" id="meterFill" style="width:80%"></div></div>
+      <div class="meter-head"><span data-i18n="scoreAchieved">Score achieved</span><span id="meterLabel">32 of 40 points</span></div>
+      <div class="meter" role="progressbar" aria-label="Percentage of available points earned" data-i18n-aria="meterAria" aria-valuemin="0" aria-valuemax="100" aria-valuenow="80" id="meter"><div class="meter-fill" id="meterFill" style="width:80%"></div></div>
       <div class="result-note" id="resultNote"><span class="note-symbol" aria-hidden="true">✓</span><span id="noteMessage">Grades are calculated from the exact percentage, without first rounding it.</span></div>
     </section>
   </div>
   <details class="guide" id="guide">
-    <summary><span>Explore the grade boundaries<span class="sub" id="guideDescription">View the percentage and point thresholds for E-Kurs.</span></span><span class="chevron" aria-hidden="true">⌄</span></summary>
-    <div class="guide-body"><div class="table-scroll"><table><thead><tr><th>Actual grade</th><th>Klax Limit</th><th>From (%)</th><th>Minimum whole points</th><th>NP*</th></tr></thead><tbody id="boundaryRows"></tbody></table></div><p class="guide-foot" id="guideFoot">Minimum points assume assessments are marked in whole points. Decimal scores are graded using the exact percentage.</p></div>
+    <summary><span><span data-i18n="guideHeading">Explore the grade boundaries</span><span class="sub" id="guideDescription">View the percentage and point thresholds for E-Kurs.</span></span><span class="chevron" aria-hidden="true">⌄</span></summary>
+    <div class="guide-body"><div class="table-scroll"><table><thead><tr><th data-i18n="tableGrade">Actual grade</th><th data-i18n="tableLimit">Klax Limit</th><th data-i18n="tableFrom">From (%)</th><th data-i18n="tableWholePoints">Minimum whole points</th><th>NP*</th></tr></thead><tbody id="boundaryRows"></tbody></table></div><p class="guide-foot" id="guideFoot" data-i18n="guideFoot">Minimum points assume assessments are marked in whole points. Decimal scores are graded using the exact percentage.</p></div>
   </details>
-  <footer class="foot"><p>Based on the provided Klax grading table. E-Kurs uses +/− distinctions; G-Kurs uses whole grades (1 from 84%, 2 from 71%, 3 from 55%, 4 from 45%). Klax Limit Grade applies a minimum of 4−, while the actual result remains visible. *Notenpunkte correspond to the percentage band in the supplied table.</p><p>Independent teacher resource · No student data is collected · <a href="https://klax.de/de" target="_blank" rel="noopener noreferrer">klax.de</a></p></footer>
+  <footer class="foot"><p data-i18n="footerExplainer">Based on the provided Klax grading table. E-Kurs uses +/− distinctions; G-Kurs uses whole grades (1 from 84%, 2 from 71%, 3 from 55%, 4 from 45%). Klax Limit Grade applies a minimum of 4−, while the actual result remains visible. *Notenpunkte correspond to the percentage band in the supplied table.</p><p><span data-i18n="footerIndependence">Independent teacher resource · No student data is collected</span> · <a href="https://klax.de/de" target="_blank" rel="noopener noreferrer">klax.de</a></p></footer>
 </main>
 <script>
 (function(){
   'use strict';
+  // Percentages come from the supplied Klax grade table; do not change them when translating.
   const E=[{min:96,g:'1+',np:15},{min:92,g:'1',np:14},{min:88,g:'1−',np:13},{min:84,g:'2+',np:12},{min:81,g:'2',np:11},{min:76,g:'2−',np:10},{min:71,g:'3+',np:9},{min:66,g:'3',np:8},{min:60,g:'3−',np:7},{min:55,g:'4+',np:6},{min:50,g:'4',np:5},{min:45,g:'4−',np:4},{min:38,g:'5+',np:3},{min:30,g:'5',np:2},{min:20,g:'5−',np:1},{min:0,g:'6',np:0}];
   const G=[{min:84,g:'1'},{min:71,g:'2'},{min:55,g:'3'},{min:45,g:'4'},{min:30,g:'5'},{min:0,g:'6'}];
+  const messages={
+    en:{
+      pageTitle:'Klax Grade Calculator | Notenrechner',
+      metaDescription:'A bilingual Klax-inspired grade calculator for E-Kurs and G-Kurs with a 4− Klax limit grade.',
+      logoAria:'Klax logo', languageLabel:'Display language',
+      brandTitle:'Klax · Learning tools',brandSubtitle:'Assessment made simple',
+      offline:'Calculations stay in your browser',offlineTitle:'Student scores are not sent to any server',
+      eyebrow:'Tools for teachers',heading:'Grade Calculator',
+      intro:'A clear, easy way to turn assessment points into grades — with separate E-Kurs and G-Kurs scales and the Klax grade limit.',
+      setupTitle:'Enter assessment points',courseLabel:'Select grading scale',
+      eCourseInfo:'Differentiated grades including + and −; grade 1 starts at 92%.',
+      gCourseInfo:'Whole-number grades; grade 1 starts at 84% (lower than E-Kurs).',
+      totalLabel:'Total possible points',maximum:'Maximum',scoredLabel:"Student's points",achieved:'Achieved',
+      pointsShort:'pts',totalHelp:'The highest possible score for this task.',
+      scoredHelp:'Whole or decimal points, e.g. 32 or 32,5.',nextStudent:'Next student',reset:'Reset',
+      resultsTitle:'Your grade results',instant:'Calculated instantly',actualGrade:'Actual grade',limitGrade:'Klax Limit Grade',
+      percentage:'Percentage',notepoints:'Notenpunkte*',wholeGrade:'Whole grade',scoreAchieved:'Score achieved',
+      meterAria:'Percentage of available points earned',guideHeading:'Explore the grade boundaries',
+      tableGrade:'Actual grade',tableLimit:'Klax Limit',tableFrom:'From (%)',tableWholePoints:'Minimum whole points',
+      guideFoot:'Minimum points assume assessments are marked in whole points. Decimal scores are graded using the exact percentage.',
+      footerExplainer:'Based on the provided Klax grading table. E-Kurs uses +/− distinctions; G-Kurs uses whole grades (1 from 84%, 2 from 71%, 3 from 55%, 4 from 45%). Klax Limit Grade applies a minimum of 4−, while the actual result remains visible. *Notenpunkte correspond to the percentage band in the supplied table.',
+      footerIndependence:'Independent teacher resource · No student data is collected',
+      errorTotal:'Please enter a total greater than zero.',
+      errorScore:'The student score must be between 0 and the total points.',
+      actualSub:'{course}-Kurs assessment grade',limitSub:'Minimum permitted: 4−',
+      limitSubAdjusted:'Adjusted from {grade} · minimum 4−',
+      meterValue:'{achieved} of {total} points',meterEmpty:'Enter a score above',
+      noteEmpty:'Enter the total and achieved points to calculate a grade.',
+      noteCapped:'Actual grade {grade} is below the Klax minimum. The Klax Limit Grade is displayed as 4− in red.',
+      noteNormal:'Results use exact percentages. E-Kurs and G-Kurs each follow their own grade thresholds.',
+      guideDescription:'View the percentage and point thresholds for {course}-Kurs.'
+    },
+    de:{
+      pageTitle:'Klax Notenrechner | Grade Calculator',
+      metaDescription:'Zweisprachiger Klax-Notenrechner für E-Kurs und G-Kurs mit einer Grenznote von 4−.',
+      logoAria:'Klax-Logo',languageLabel:'Sprache wählen',
+      brandTitle:'Klax · Lernwerkzeuge',brandSubtitle:'Leistungen einfach bewerten',
+      offline:'Berechnung erfolgt im Browser',offlineTitle:'Die eingegebenen Punkte werden nicht an einen Server gesendet',
+      eyebrow:'Für Lehrkräfte',heading:'Notenrechner',
+      intro:'Einfach die erreichten Punkte in Noten umrechnen — mit unterschiedlichen Maßstäben für E-Kurs und G-Kurs sowie der Klax-Grenznote.',
+      setupTitle:'Punkte eingeben',courseLabel:'Bewertungsmaßstab wählen',
+      eCourseInfo:'Noten mit + und −; die Note 1 beginnt bei 92 %.',
+      gCourseInfo:'Ganze Noten; die Note 1 beginnt bereits bei 84 % (niedrigere Grenze als im E-Kurs).',
+      totalLabel:'Maximalpunktzahl',maximum:'Insgesamt',scoredLabel:'Erreichte Punkte',achieved:'Erreicht',
+      pointsShort:'Pkt.',totalHelp:'Die höchste erreichbare Punktzahl für diese Aufgabe.',
+      scoredHelp:'Ganze Zahlen oder Dezimalzahlen, z. B. 32 oder 32,5.',nextStudent:'Nächste Person',reset:'Zurücksetzen',
+      resultsTitle:'Notenergebnis',instant:'Sofort berechnet',actualGrade:'Erreichte Note',limitGrade:'Klax-Grenznote',
+      percentage:'Prozent',notepoints:'Notenpunkte*',wholeGrade:'Note ohne +/−',scoreAchieved:'Erreichte Punkte',
+      meterAria:'Anteil der erreichten Punkte',guideHeading:'Notengrenzen ansehen',
+      tableGrade:'Erreichte Note',tableLimit:'Klax-Grenznote',tableFrom:'Ab (%)',tableWholePoints:'Mindestpunktzahl (ganze Punkte)',
+      guideFoot:'Die Mindestpunktzahl gilt für Aufgaben mit ganzzahligen Punkten. Dezimalwerte werden nach dem exakten Prozentwert bewertet.',
+      footerExplainer:'Grundlage ist die bereitgestellte Klax-Notentabelle. Im E-Kurs gibt es Noten mit +/−, im G-Kurs ganze Noten (1 ab 84 %, 2 ab 71 %, 3 ab 55 %, 4 ab 45 %). Bei der Klax-Grenznote wird eine schlechtere Note als 4− auf 4− begrenzt; die tatsächlich erreichte Note bleibt sichtbar. *Die Notenpunkte richten sich nach dem Prozentbereich in der Vorlage.',
+      footerIndependence:'Unabhängig erstelltes Tool für Lehrkräfte · Es werden keine Schülerdaten erfasst',
+      errorTotal:'Bitte eine Gesamtpunktzahl größer als null eingeben.',
+      errorScore:'Die erreichten Punkte müssen zwischen 0 und der Gesamtpunktzahl liegen.',
+      actualSub:'Bewertung im {course}-Kurs',limitSub:'Schlechteste zulässige Note: 4−',
+      limitSubAdjusted:'Von {grade} auf 4− begrenzt',
+      meterValue:'{achieved} von {total} Punkten',meterEmpty:'Oben Punkte eingeben',
+      noteEmpty:'Bitte die Gesamtpunktzahl und die erreichten Punkte eingeben.',
+      noteCapped:'Die erreichte Note {grade} liegt unterhalb der Klax-Grenze. Als Klax-Grenznote wird 4− in Rot angezeigt.',
+      noteNormal:'Die Berechnung erfolgt mit dem exakten Prozentwert. Für E-Kurs und G-Kurs gelten unterschiedliche Notengrenzen.',
+      guideDescription:'Prozent- und Punktgrenzen für den {course}-Kurs ansehen.'
+    }
+  };
   const $=id=>document.getElementById(id);
-  const numFmt=new Intl.NumberFormat('en-GB',{maximumFractionDigits:2});
   let course='E';
+  let lang='en';
+  let numFmt=new Intl.NumberFormat('en-GB',{maximumFractionDigits:2});
+  const tr=(key,values={})=>{
+    let value=messages[lang][key];
+    for(const [k,v] of Object.entries(values))value=value.replaceAll('{'+k+'}',String(v));
+    return value;
+  };
   const isLow=grade=>/^[456]/.test(grade);
   const limitOf=grade=>/^[56]/.test(grade)?'4−':grade;
-  function parsePoints(text){const s=String(text||'').trim().replace(',','.');if(!s)return null;if(!/^\d+(?:\.\d+)?$/.test(s))return NaN;return Number(s)}
-  function getGrade(pct,scale){const table=scale==='E'?E:G;return table.find(row=>pct+1e-10>=row.min)}
-  function renderRows(valid,total,actual){const table=course==='E'?E:G;const rows=table.map(row=>{
-    const tr=document.createElement('tr');if(valid&&row.g===actual)tr.className='active';
-    const np=E.find(t=>row.min+1e-10>=t.min).np;
-    const pointMinimum=(Number.isFinite(total)&&total>0)?Math.max(0,Math.ceil(row.min*total/100-1e-10)):null;
-    const vals=[row.g,limitOf(row.g),row.min+'%',pointMinimum===null?'—':numFmt.format(pointMinimum),np];
-    vals.forEach((v,i)=>{const td=document.createElement('td');td.textContent=v;if(i===1&&isLow(row.g))td.classList.add('limited');tr.appendChild(td)});
-    return tr;
-  });$('boundaryRows').replaceChildren(...rows)}
+  function parsePoints(text){
+    const s=String(text||'').trim().replace(',','.');
+    if(!s)return null;
+    if(!/^\d+(?:\.\d+)?$/.test(s))return NaN;
+    return Number(s);
+  }
+  function getGrade(pct,scale){
+    const table=scale==='E'?E:G;
+    return table.find(row=>pct+1e-10>=row.min);
+  }
+  function renderRows(valid,total,actual){
+    const table=course==='E'?E:G;
+    const rows=table.map(row=>{
+      const trEl=document.createElement('tr');
+      if(valid&&row.g===actual)trEl.className='active';
+      const np=E.find(t=>row.min+1e-10>=t.min).np;
+      const minWhole=(Number.isFinite(total)&&total>0)?Math.max(0,Math.ceil(row.min*total/100-1e-10)):null;
+      const vals=[row.g,limitOf(row.g),numFmt.format(row.min)+'%',minWhole===null?'—':numFmt.format(minWhole),np];
+      vals.forEach((v,i)=>{
+        const td=document.createElement('td');
+        td.textContent=v;
+        if(i===1&&isLow(row.g))td.classList.add('limited');
+        trEl.appendChild(td);
+      });
+      return trEl;
+    });
+    $('boundaryRows').replaceChildren(...rows);
+  }
   function calculate(){
     const total=parsePoints($('total').value),scored=parsePoints($('scored').value);
     const invalidTotal=total!==null&&(!Number.isFinite(total)||total<=0);
     const invalidScore=scored!==null&&(!Number.isFinite(scored)||scored<0||(Number.isFinite(total)&&total>0&&scored>total));
     const valid=Number.isFinite(total)&&total>0&&Number.isFinite(scored)&&scored>=0&&scored<=total;
-    $('total').setAttribute('aria-invalid',String(invalidTotal));$('scored').setAttribute('aria-invalid',String(invalidScore));
+    $('total').setAttribute('aria-invalid',String(invalidTotal));
+    $('scored').setAttribute('aria-invalid',String(invalidScore));
     let error='';
-    if(invalidTotal)error='Please enter a total greater than zero.';
-    else if(invalidScore)error='The student score must be between 0 and the total points.';
+    if(invalidTotal)error=tr('errorTotal');
+    else if(invalidScore)error=tr('errorScore');
     $('error').textContent=error;
     const pct=valid?100*(scored/total):null;
     const entry=valid?getGrade(pct,course):null;
     const np=valid?getGrade(pct,'E').np:null;
     const grade=entry?entry.g:null;
     const capped=grade?limitOf(grade):null;
-    $('actualGrade').textContent=grade||'—';$('limitGrade').textContent=capped||'—';
-    $('actualText').textContent=course+'-Kurs assessment grade';
-    $('limitText').textContent=grade&&/^[56]/.test(grade)?'Adjusted from '+grade+' · minimum 4−':'Minimum permitted: 4−';
+    $('actualGrade').textContent=grade||'—';
+    $('limitGrade').textContent=capped||'—';
+    $('actualText').textContent=tr('actualSub',{course});
+    $('limitText').textContent=grade&&/^[56]/.test(grade)?tr('limitSubAdjusted',{grade}):tr('limitSub');
     $('limitCard').classList.toggle('danger',Boolean(grade&&isLow(grade)));
     $('percent').textContent=valid?numFmt.format(pct)+'%':'—';
     $('notenpunkte').textContent=valid?np+' / 15':'—';
     $('wholeGrade').textContent=valid?grade[0]:'—';
-    $('meterLabel').textContent=valid?numFmt.format(scored)+' of '+numFmt.format(total)+' points':'Enter a score above';
+    $('meterLabel').textContent=valid?tr('meterValue',{achieved:numFmt.format(scored),total:numFmt.format(total)}):tr('meterEmpty');
     $('meter').setAttribute('aria-valuenow',valid?String(pct):'0');
     $('meterFill').style.width=valid?Math.max(0,Math.min(100,pct))+'%':'0%';
     $('resultNote').classList.toggle('danger',Boolean(grade&&/^[56]/.test(grade)));
-    $('noteMessage').textContent=(!valid)?'Enter the total and achieved points to calculate a grade.':(/^[56]/.test(grade)?'Actual grade '+grade+' is below the Klax minimum. The Klax Limit Grade is displayed as 4− in red.':'Results use exact percentages. E-Kurs and G-Kurs each follow their own grade thresholds.');
-    $('guideDescription').textContent='View the percentage and point thresholds for '+course+'-Kurs.';
+    $('noteMessage').textContent=!valid?tr('noteEmpty'):(/^[56]/.test(grade)?tr('noteCapped',{grade}):tr('noteNormal'));
+    $('guideDescription').textContent=tr('guideDescription',{course});
     renderRows(valid,total,grade);
   }
-  function setCourse(name){course=name;$('eCourse').setAttribute('aria-pressed',String(name==='E'));$('gCourse').setAttribute('aria-pressed',String(name==='G'));$('courseInfo').textContent=name==='E'?'Differentiated grades including + and −; grade 1 starts at 92%.':'Whole-number grades; grade 1 starts at 84% (lower than E-Kurs).';calculate()}
+  function setCourse(name){
+    course=name;
+    $('eCourse').setAttribute('aria-pressed',String(name==='E'));
+    $('gCourse').setAttribute('aria-pressed',String(name==='G'));
+    $('courseInfo').textContent=tr(name==='E'?'eCourseInfo':'gCourseInfo');
+    calculate();
+  }
+  function setLanguage(selected){
+    lang=selected==='de'?'de':'en';
+    numFmt=new Intl.NumberFormat(lang==='de'?'de-DE':'en-GB',{maximumFractionDigits:2});
+    document.documentElement.lang=lang;
+    document.title=tr('pageTitle');
+    document.querySelector('meta[name="description"]').content=tr('metaDescription');
+    document.querySelectorAll('[data-i18n]').forEach(el=>{el.textContent=tr(el.dataset.i18n)});
+    document.querySelectorAll('[data-i18n-aria]').forEach(el=>el.setAttribute('aria-label',tr(el.dataset.i18nAria)));
+    document.querySelectorAll('[data-i18n-title]').forEach(el=>el.title=tr(el.dataset.i18nTitle));
+    $('langEn').setAttribute('aria-pressed',String(lang==='en'));
+    $('langDe').setAttribute('aria-pressed',String(lang==='de'));
+    try{localStorage.setItem('klaxLanguage',lang)}catch(_){/* local file or browser privacy settings */}
+    setCourse(course);
+  }
+  $('langEn').addEventListener('click',()=>setLanguage('en'));
+  $('langDe').addEventListener('click',()=>setLanguage('de'));
   $('eCourse').addEventListener('click',()=>setCourse('E'));
   $('gCourse').addEventListener('click',()=>setCourse('G'));
   $('total').addEventListener('input',calculate);
   $('scored').addEventListener('input',calculate);
   $('next').addEventListener('click',()=>{$('scored').value='';calculate();$('scored').focus()});
   $('reset').addEventListener('click',()=>{$('total').value='40';$('scored').value='32';setCourse('E')});
-  calculate();
+  let initialLang='en';
+  try{initialLang=localStorage.getItem('klaxLanguage')||(/^(de)(-|$)/i.test(navigator.language)?'de':'en')}catch(_){/* no storage access */}
+  setLanguage(initialLang);
 })();
 </script>
 </body>
