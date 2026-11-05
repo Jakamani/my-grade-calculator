@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#faf9f5">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="A Klax-inspired grade calculator using E-Kurs and G-Kurs grade thresholds with the 4− Klax limit grade.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Klax Grade Calculator | Notenrechner">
+  <meta property="og:description" content="Calculate E-Kurs and G-Kurs grades from assessment points, including the Klax minimum grade limit.">
+  <meta name="robots" content="index,follow">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2215%22%20fill%3D%22%23fff%22%2F%3E%3Cpath%20d%3D%22M17%2012v40m2-21L42%2012M19%2031l24%2021%22%20fill%3D%22none%22%20stroke%3D%22%23f05108%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2249%22%20cy%3D%2248%22%20r%3D%227%22%20fill%3D%22%230787a8%22%2F%3E%3C%2Fsvg%3E">
+  <title>Klax Grade Calculator | Notenrechner</title>
+  <style>
+    :root {
+      --paper:#faf9f5; --white:#fff; --ink:#1e3236; --muted:#627077;
+      --line:#e5e8e5; --teal:#0787a8; --teal-dark:#006f8b;
+      --orange:#f05108; --green:#6c9909; --yellow:#f7aa00;
+      --danger:#b42332; --danger-bg:#fff1f0; --danger-line:#f4d4d0;
+      --shadow:0 22px 55px rgba(25,56,56,.07),0 2px 7px rgba(25,56,56,.035);
+    }
+    *,*::before,*::after{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+    body::before{content:"";position:absolute;inset:0 0 auto;height:7px;background:linear-gradient(90deg,var(--orange) 0 25%,var(--green) 25% 50%,var(--yellow) 50% 75%,var(--teal) 75% 100%)}
+    button,input{font:inherit}
+    button{cursor:pointer}
+    button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid #96dced;outline-offset:3px}
+    .wrap{max-width:1130px;margin:0 auto;padding:38px 25px 52px}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:55px}
+    .brand{display:flex;align-items:center;gap:19px;min-width:0}
+    .wordmark{display:block;width:176px;height:auto;flex-shrink:0}
+    .brand-description{display:flex;flex-direction:column;gap:4px;padding-left:18px;border-left:1px solid #daddd6}
+    .brand-description strong{font-size:13px;letter-spacing:.13em;text-transform:uppercase;font-weight:850}
+    .brand-description span{font-size:13px;color:var(--muted)}
+    .offline{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:700;letter-spacing:.015em;color:#4e7476;background:#eef7f4;border:1px solid #d7e9e5;padding:10px 15px;border-radius:999px;white-space:nowrap}
+    .offline::before{content:"";height:8px;width:8px;background:#58a16e;border-radius:50%}
+    .intro{margin-bottom:30px;display:flex;justify-content:space-between;align-items:flex-end;gap:30px}
+    .eyebrow{color:var(--teal-dark);letter-spacing:.16em;text-transform:uppercase;font-size:11px;font-weight:900;margin:0 0 12px}
+    h1{font-size:clamp(35px,5vw,52px);line-height:1.08;letter-spacing:-.065em;font-weight:850;margin:0 0 13px}
+    .intro p:last-child{color:var(--muted);margin:0;font-size:15px;line-height:1.65;max-width:560px}
+    .intro-decor{flex:0 0 auto;display:flex;align-items:flex-end;gap:8px;padding-bottom:7px}
+    .intro-decor span{display:block;width:12px;border-radius:12px;transform:rotate(12deg)}
+    .intro-decor span:nth-child(1){background:var(--orange);height:35px}
+    .intro-decor span:nth-child(2){background:var(--green);height:57px}
+    .intro-decor span:nth-child(3){background:var(--yellow);height:43px}
+    .intro-decor span:nth-child(4){background:var(--teal);height:69px}
+    .workspace{display:grid;grid-template-columns:minmax(325px,.88fr) minmax(0,1.18fr);gap:22px;align-items:stretch}
+    .panel{background:#fff;border:1px solid var(--line);border-radius:25px;box-shadow:var(--shadow)}
+    .setup{padding:30px 31px 28px}
+    .panel-heading{display:flex;align-items:center;gap:11px;margin-bottom:24px}
+    .panel-heading .num{background:#e6f5f8;color:var(--teal-dark);width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-weight:900;font-size:13px}
+    h2{font-size:17px;letter-spacing:-.03em;margin:0;font-weight:820}
+    .group-label{display:block;font-size:13px;font-weight:780;margin:0 0 10px}
+    .segmented{background:#f2f4f2;display:grid;grid-template-columns:1fr 1fr;padding:5px;border:1px solid #e9ebe8;border-radius:14px;gap:5px}
+    .segmented button{background:transparent;color:#65716f;border:0;padding:12px 10px;border-radius:10px;font-size:14px;font-weight:800;transition:background .14s,color .14s,box-shadow .14s}
+    .segmented button[aria-pressed=true]{background:#fff;color:#006e8c;box-shadow:0 2px 7px rgba(31,63,65,.11)}
+    .scale-explainer{margin:10px 1px 29px;color:var(--muted);font-size:12px;line-height:1.5;min-height:18px}
+    .input-group{margin-bottom:18px}
+    .input-title{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:9px}
+    label{font-size:13px;font-weight:800}
+    .input-title .unit{font-size:11px;color:#7f8a8a}
+    .field-wrap{position:relative}
+    .field-wrap input{width:100%;border:1.5px solid #dce2e1;border-radius:13px;padding:17px 64px 17px 18px;font-size:26px;font-weight:760;color:#263b3f;background:#fcfdfc;letter-spacing:-.045em;font-variant-numeric:tabular-nums;transition:border-color .13s,box-shadow .13s}
+    .field-wrap input:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(6,135,168,.08);outline:none}
+    .field-wrap input[aria-invalid="true"]{border-color:var(--danger);background:#fffafa}
+    .field-wrap .suffix{position:absolute;right:17px;top:50%;transform:translateY(-50%);font-size:13px;color:#9ba8a7;font-weight:700;pointer-events:none}
+    .helper{font-size:11.5px;line-height:1.5;color:#899490;margin:7px 0 0}
+    .error{font-size:12px;color:var(--danger);font-weight:730;min-height:18px;line-height:1.4;margin:5px 0 11px}
+    .actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:8px}
+    .primary,.secondary{border-radius:12px;font-size:13px;font-weight:800;min-height:44px;padding:11px 14px;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .13s,background .13s}
+    .primary:hover,.secondary:hover{transform:translateY(-1px)}
+    .primary{background:var(--teal);color:#fff;border:1px solid var(--teal);flex:1}
+    .primary:hover{background:var(--teal-dark)}
+    .secondary{background:#fff;color:#456369;border:1px solid #dce5e3}
+    .secondary:hover{background:#f7faf9}
+    .hint-icon{width:15px;height:15px;display:block}
+    .outcome{padding:30px;display:flex;flex-direction:column;gap:0;background:linear-gradient(160deg,#ffffff 30%,#fbfdfd 100%)}
+    .result-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:23px}
+    .result-head .tiny{font-size:11px;font-weight:800;color:#79908e;background:#f2f7f5;padding:8px 11px;border-radius:999px;white-space:nowrap}
+    .grade-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+    .grade-card{min-height:191px;background:#f6f8f7;border:1px solid #e7ecea;border-radius:18px;padding:21px;position:relative;overflow:hidden}
+    .grade-card::after{content:"";position:absolute;right:-32px;top:-37px;height:115px;width:115px;border-radius:50%;background:rgba(0,135,166,.055);pointer-events:none}
+    .grade-card.limit{background:#f3f9fa;border-color:#dbecef}
+    .grade-card.limit.danger{background:var(--danger-bg);border-color:var(--danger-line)}
+    .grade-card.limit.danger::after{background:rgba(180,35,50,.055)}
+    .grade-label{font-size:12px;font-weight:800;color:#637775;margin-bottom:7px;position:relative;z-index:1}
+    .grade-large{font-size:clamp(57px,7vw,88px);line-height:1;font-weight:850;letter-spacing:-.09em;color:var(--ink);font-variant-numeric:tabular-nums;position:relative;z-index:1}
+    .grade-card.limit .grade-large{color:var(--teal-dark)}
+    .grade-card.limit.danger .grade-large{color:var(--danger)}
+    .grade-sub{font-size:11px;line-height:1.45;color:#7d8a88;margin-top:11px;position:relative;z-index:1}
+    .grade-card.limit.danger .grade-sub{color:#a3464b}
+    .metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:17px 0 20px}
+    .metric{border:1px solid #e7ecea;border-radius:14px;padding:14px 15px;background:#fff;min-width:0}
+    .metric-label{font-size:11px;color:#798986;line-height:1.4;font-weight:690}
+    .metric-value{font-size:24px;font-weight:800;letter-spacing:-.055em;margin-top:8px;font-variant-numeric:tabular-nums;white-space:nowrap}
+    .meter-head{display:flex;justify-content:space-between;gap:12px;align-items:center;color:#667a78;font-size:11px;font-weight:750;margin:0 0 9px}
+    .meter{height:10px;background:#e9eeee;border-radius:999px;overflow:hidden;position:relative}
+    .meter-fill{height:100%;width:0;background:linear-gradient(90deg,#49a2b4,#0088ab);border-radius:999px;transition:width .2s ease}
+    .result-note{display:flex;align-items:flex-start;gap:11px;border:1px solid #e0ebe9;background:#f5faf9;border-radius:13px;padding:13px 15px;margin-top:18px;font-size:12px;line-height:1.55;color:#536c6b}
+    .result-note.danger{background:#fff6f5;border-color:#f1d7d4;color:#94464a}
+    .note-symbol{flex:none;display:grid;place-items:center;border-radius:50%;width:19px;height:19px;background:#d8efea;color:#087d79;font-size:12px;font-weight:900;margin-top:1px}
+    .result-note.danger .note-symbol{background:#ffdeda;color:var(--danger)}
+    .guide{margin-top:24px;border:1px solid var(--line);background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 5px 24px rgba(22,54,52,.028)}
+    .guide summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:22px 27px;font-weight:800;font-size:14px}
+    .guide summary::-webkit-details-marker{display:none}
+    .guide summary .sub{display:block;font-size:12px;color:#81908e;font-weight:500;margin-top:5px;line-height:1.5}
+    .chevron{flex:none;display:grid;place-items:center;width:28px;height:28px;background:#f3f6f5;border-radius:9px;font-size:19px;color:#697c79;transition:transform .15s}
+    details[open] .chevron{transform:rotate(180deg)}
+    .guide-body{padding:0 26px 23px}
+    .table-scroll{overflow-x:auto;border:1px solid #e8eae7;border-radius:13px}
+    table{width:100%;border-collapse:collapse;text-align:left;font-size:12px;font-variant-numeric:tabular-nums}
+    thead{background:#f5f8f7;color:#677775}
+    th,td{padding:12px 13px;white-space:nowrap;border-bottom:1px solid #edf0ef}
+    th{font-size:11px;font-weight:850}
+    tbody tr:last-child td{border-bottom:none}
+    tbody tr.active{background:#e9f5f6;font-weight:800}
+    td.limited{color:var(--danger);font-weight:850}
+    .guide-foot{color:#81908b;font-size:11px;line-height:1.6;margin:12px 0 0}
+    .foot{display:flex;justify-content:space-between;gap:24px;margin-top:23px;color:#87938d;font-size:11px;line-height:1.6}
+    .foot p{margin:0;max-width:740px}
+    .foot a{color:var(--teal-dark);text-decoration:none}
+    .foot a:hover{text-decoration:underline}
+    @media(max-width:870px){.wrap{padding:30px 20px 45px}.topbar{margin-bottom:42px}.workspace{grid-template-columns:minmax(0,1fr);gap:17px}.setup,.outcome{padding:28px}.intro-decor{display:none}.grade-large{font-size:78px}.foot{flex-direction:column;gap:6px}}
+    @media(max-width:530px){.wrap{padding:24px 14px 30px}.topbar{margin-bottom:34px}.brand{gap:11px}.wordmark{width:118px}.brand-description{padding-left:11px}.brand-description strong{font-size:11px}.brand-description span{font-size:11px}.offline{font-size:0;padding:9px 10px;gap:0}.offline::before{height:9px;width:9px}.intro{margin-bottom:22px}.intro p:last-child{font-size:13px}.setup,.outcome{padding:20px;border-radius:20px}.panel-heading{margin-bottom:19px}.grade-grid{gap:9px}.grade-card{min-height:166px;padding:15px}.grade-large{font-size:62px}.grade-label{font-size:11px}.grade-sub{font-size:10px}.metrics{gap:7px}.metric{padding:11px 9px}.metric-label{font-size:10px}.metric-value{font-size:20px}.guide summary{padding:17px 18px}.guide-body{padding:0 13px 18px}th,td{padding:10px 10px}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+    @media print{body{background:#fff}body::before{display:none}.wrap{max-width:100%;padding:0}.topbar{margin:0 0 16px}.intro{margin:0 0 15px}.intro-decor,.offline,.actions,.guide,.foot{display:none!important}.workspace{grid-template-columns:1fr 1fr;gap:15px}.panel{box-shadow:none;border-radius:12px}.setup,.outcome{padding:17px}.grade-large{font-size:63px}.grade-card{min-height:160px}.input-group{margin-bottom:10px}}
+  </style>
+</head>
+<body>
+<main class="wrap">
+  <header class="topbar">
+    <div class="brand">
+      <svg class="wordmark" role="img" aria-label="Klax logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 408 143">
+        <title>KLAX</title>
+        <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="#f05008" stroke-width="24" d="M54 29 L54 125 M56 82 L110 32 M57 83 L112 122"/>
+          <path stroke="#659900" stroke-width="25" d="M150 31 L150 124 L201 124"/>
+          <path stroke="#f7a500" stroke-width="23" d="M223 124 L260 34 L296 124 M237 94 L283 94"/>
+          <path stroke="#028bb1" stroke-width="26" d="M327 38 L380 122 M380 30 L331 121"/>
+        </g>
+      </svg>
+      <div class="brand-description"><strong>Klax · Learning tools</strong><span>Assessment made simple</span></div>
+    </div>
+    <div class="offline" title="Student scores are not sent to any server">Calculations stay in your browser</div>
+  </header>
+  <section class="intro" aria-labelledby="mainTitle">
+    <div><p class="eyebrow">Tools for teachers</p><h1 id="mainTitle">Grade Calculator<span style="color:var(--orange)">.</span></h1><p>A clear, easy way to turn assessment points into grades — with separate E-Kurs and G-Kurs scales and the Klax grade limit.</p></div>
+    <div class="intro-decor" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+  </section>
+  <div class="workspace">
+    <section class="panel setup" aria-labelledby="setupTitle">
+      <div class="panel-heading"><span class="num">01</span><h2 id="setupTitle">Enter assessment points</h2></div>
+      <label class="group-label" id="courseLabel">Select grading scale</label>
+      <div class="segmented" role="group" aria-labelledby="courseLabel"><button id="eCourse" type="button" aria-pressed="true">E-Kurs</button><button id="gCourse" type="button" aria-pressed="false">G-Kurs</button></div>
+      <p class="scale-explainer" id="courseInfo">Differentiated grades including + and −; grade 1 starts at 92%.</p>
+      <div class="input-group">
+        <div class="input-title"><label for="total">Total possible points</label><span class="unit">Maximum</span></div>
+        <div class="field-wrap"><input id="total" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" value="40" aria-describedby="totalHelp"><span class="suffix">pts</span></div>
+        <p class="helper" id="totalHelp">The highest possible score for this task.</p>
+      </div>
+      <div class="input-group">
+        <div class="input-title"><label for="scored">Student's points</label><span class="unit">Achieved</span></div>
+        <div class="field-wrap"><input id="scored" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" value="32" aria-describedby="scoredHelp"><span class="suffix">pts</span></div>
+        <p class="helper" id="scoredHelp">Whole or decimal points, e.g. 32 or 32,5.</p>
+      </div>
+      <div id="error" class="error" role="status" aria-live="polite"></div>
+      <div class="actions"><button class="primary" id="next" type="button">Next student <span aria-hidden="true">→</span></button><button class="secondary" id="reset" type="button">Reset</button></div>
+    </section>
+    <section class="panel outcome" aria-labelledby="resultsTitle" aria-live="polite" aria-atomic="false">
+      <div class="result-head"><div class="panel-heading" style="margin:0"><span class="num">02</span><h2 id="resultsTitle">Your grade results</h2></div><span class="tiny">Calculated instantly</span></div>
+      <div class="grade-grid">
+        <div class="grade-card"><div class="grade-label">Actual grade</div><div class="grade-large" id="actualGrade">2−</div><div class="grade-sub" id="actualText">E-Kurs assessment grade</div></div>
+        <div class="grade-card limit" id="limitCard"><div class="grade-label">Klax Limit Grade</div><div class="grade-large" id="limitGrade">2−</div><div class="grade-sub" id="limitText">Minimum permitted: 4−</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-label">Percentage</div><div class="metric-value" id="percent">80%</div></div>
+        <div class="metric"><div class="metric-label">Notenpunkte*</div><div class="metric-value" id="notenpunkte">10 / 15</div></div>
+        <div class="metric"><div class="metric-label">Whole grade</div><div class="metric-value" id="wholeGrade">2</div></div>
+      </div>
+      <div class="meter-head"><span>Score achieved</span><span id="meterLabel">32 of 40 points</span></div>
+      <div class="meter" role="progressbar" aria-label="Percentage of available points earned" aria-valuemin="0" aria-valuemax="100" aria-valuenow="80" id="meter"><div class="meter-fill" id="meterFill" style="width:80%"></div></div>
+      <div class="result-note" id="resultNote"><span class="note-symbol" aria-hidden="true">✓</span><span id="noteMessage">Grades are calculated from the exact percentage, without first rounding it.</span></div>
+    </section>
+  </div>
+  <details class="guide" id="guide">
+    <summary><span>Explore the grade boundaries<span class="sub" id="guideDescription">View the percentage and point thresholds for E-Kurs.</span></span><span class="chevron" aria-hidden="true">⌄</span></summary>
+    <div class="guide-body"><div class="table-scroll"><table><thead><tr><th>Actual grade</th><th>Klax Limit</th><th>From (%)</th><th>Minimum whole points</th><th>NP*</th></tr></thead><tbody id="boundaryRows"></tbody></table></div><p class="guide-foot" id="guideFoot">Minimum points assume assessments are marked in whole points. Decimal scores are graded using the exact percentage.</p></div>
+  </details>
+  <footer class="foot"><p>Based on the provided Klax grading table. E-Kurs uses +/− distinctions; G-Kurs uses whole grades (1 from 84%, 2 from 71%, 3 from 55%, 4 from 45%). Klax Limit Grade applies a minimum of 4−, while the actual result remains visible. *Notenpunkte correspond to the percentage band in the supplied table.</p><p>Independent teacher resource · No student data is collected · <a href="https://klax.de/de" target="_blank" rel="noopener noreferrer">klax.de</a></p></footer>
+</main>
+<script>
+(function(){
+  'use strict';
+  const E=[{min:96,g:'1+',np:15},{min:92,g:'1',np:14},{min:88,g:'1−',np:13},{min:84,g:'2+',np:12},{min:81,g:'2',np:11},{min:76,g:'2−',np:10},{min:71,g:'3+',np:9},{min:66,g:'3',np:8},{min:60,g:'3−',np:7},{min:55,g:'4+',np:6},{min:50,g:'4',np:5},{min:45,g:'4−',np:4},{min:38,g:'5+',np:3},{min:30,g:'5',np:2},{min:20,g:'5−',np:1},{min:0,g:'6',np:0}];
+  const G=[{min:84,g:'1'},{min:71,g:'2'},{min:55,g:'3'},{min:45,g:'4'},{min:30,g:'5'},{min:0,g:'6'}];
+  const $=id=>document.getElementById(id);
+  const numFmt=new Intl.NumberFormat('en-GB',{maximumFractionDigits:2});
+  let course='E';
+  const isLow=grade=>/^[456]/.test(grade);
+  const limitOf=grade=>/^[56]/.test(grade)?'4−':grade;
+  function parsePoints(text){const s=String(text||'').trim().replace(',','.');if(!s)return null;if(!/^\d+(?:\.\d+)?$/.test(s))return NaN;return Number(s)}
+  function getGrade(pct,scale){const table=scale==='E'?E:G;return table.find(row=>pct+1e-10>=row.min)}
+  function renderRows(valid,total,actual){const table=course==='E'?E:G;const rows=table.map(row=>{
+    const tr=document.createElement('tr');if(valid&&row.g===actual)tr.className='active';
+    const np=E.find(t=>row.min+1e-10>=t.min).np;
+    const pointMinimum=(Number.isFinite(total)&&total>0)?Math.max(0,Math.ceil(row.min*total/100-1e-10)):null;
+    const vals=[row.g,limitOf(row.g),row.min+'%',pointMinimum===null?'—':numFmt.format(pointMinimum),np];
+    vals.forEach((v,i)=>{const td=document.createElement('td');td.textContent=v;if(i===1&&isLow(row.g))td.classList.add('limited');tr.appendChild(td)});
+    return tr;
+  });$('boundaryRows').replaceChildren(...rows)}
+  function calculate(){
+    const total=parsePoints($('total').value),scored=parsePoints($('scored').value);
+    const invalidTotal=total!==null&&(!Number.isFinite(total)||total<=0);
+    const invalidScore=scored!==null&&(!Number.isFinite(scored)||scored<0||(Number.isFinite(total)&&total>0&&scored>total));
+    const valid=Number.isFinite(total)&&total>0&&Number.isFinite(scored)&&scored>=0&&scored<=total;
+    $('total').setAttribute('aria-invalid',String(invalidTotal));$('scored').setAttribute('aria-invalid',String(invalidScore));
+    let error='';
+    if(invalidTotal)error='Please enter a total greater than zero.';
+    else if(invalidScore)error='The student score must be between 0 and the total points.';
+    $('error').textContent=error;
+    const pct=valid?100*(scored/total):null;
+    const entry=valid?getGrade(pct,course):null;
+    const np=valid?getGrade(pct,'E').np:null;
+    const grade=entry?entry.g:null;
+    const capped=grade?limitOf(grade):null;
+    $('actualGrade').textContent=grade||'—';$('limitGrade').textContent=capped||'—';
+    $('actualText').textContent=course+'-Kurs assessment grade';
+    $('limitText').textContent=grade&&/^[56]/.test(grade)?'Adjusted from '+grade+' · minimum 4−':'Minimum permitted: 4−';
+    $('limitCard').classList.toggle('danger',Boolean(grade&&isLow(grade)));
+    $('percent').textContent=valid?numFmt.format(pct)+'%':'—';
+    $('notenpunkte').textContent=valid?np+' / 15':'—';
+    $('wholeGrade').textContent=valid?grade[0]:'—';
+    $('meterLabel').textContent=valid?numFmt.format(scored)+' of '+numFmt.format(total)+' points':'Enter a score above';
+    $('meter').setAttribute('aria-valuenow',valid?String(pct):'0');
+    $('meterFill').style.width=valid?Math.max(0,Math.min(100,pct))+'%':'0%';
+    $('resultNote').classList.toggle('danger',Boolean(grade&&/^[56]/.test(grade)));
+    $('noteMessage').textContent=(!valid)?'Enter the total and achieved points to calculate a grade.':(/^[56]/.test(grade)?'Actual grade '+grade+' is below the Klax minimum. The Klax Limit Grade is displayed as 4− in red.':'Results use exact percentages. E-Kurs and G-Kurs each follow their own grade thresholds.');
+    $('guideDescription').textContent='View the percentage and point thresholds for '+course+'-Kurs.';
+    renderRows(valid,total,grade);
+  }
+  function setCourse(name){course=name;$('eCourse').setAttribute('aria-pressed',String(name==='E'));$('gCourse').setAttribute('aria-pressed',String(name==='G'));$('courseInfo').textContent=name==='E'?'Differentiated grades including + and −; grade 1 starts at 92%.':'Whole-number grades; grade 1 starts at 84% (lower than E-Kurs).';calculate()}
+  $('eCourse').addEventListener('click',()=>setCourse('E'));
+  $('gCourse').addEventListener('click',()=>setCourse('G'));
+  $('total').addEventListener('input',calculate);
+  $('scored').addEventListener('input',calculate);
+  $('next').addEventListener('click',()=>{$('scored').value='';calculate();$('scored').focus()});
+  $('reset').addEventListener('click',()=>{$('total').value='40';$('scored').value='32';setCourse('E')});
+  calculate();
+})();
+</script>
+</body>
+</html>
